@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>レポート - 弁当注文システム</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/store_reports.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🏪 店舗管理システム</h1>
+            <nav class="nav">
+                <a href="/store/dashboard" class="nav-link">ダッシュボード</a>
+                <a href="/store/orders" class="nav-link">注文管理</a>
+                <a href="/store/menus" class="nav-link">メニュー管理</a>
+                <a href="/store/reports" class="nav-link active">レポート</a>
+                <a href="/logout" class="nav-link">ログアウト</a>
+            </nav>
+        </header>
+
+        <main class="main">
+            <section class="page-header">
+                <h2>📊 レポート・分析</h2>
+                <p>売上・注文データの分析とレポート</p>
+            </section>
+
+            <section class="report-controls">
+                <div class="date-range">
+                    <label for="startDate">期間:</label>
+                    <input type="date" id="startDate" class="date-input" value="2025-10-01">
+                    <span>〜</span>
+                    <input type="date" id="endDate" class="date-input" value="2025-10-05">
+                    <button class="apply-btn" onclick="generateReport()">📊 レポート生成</button>
+                </div>
+                <div class="export-controls">
+                    <button class="export-btn" onclick="exportToPDF()">📄 PDF出力</button>
+                    <button class="export-btn" onclick="exportToCSV()">📋 CSV出力</button>
+                </div>
+            </section>
+
+            <section class="summary-cards">
+                <div class="summary-card">
+                    <div class="card-icon">💰</div>
+                    <div class="card-content">
+                        <h3>総売上</h3>
+                        <p class="card-value" id="totalRevenue">¥72,500</p>
+                        <p class="card-change positive">+15% 前週比</p>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="card-icon">📋</div>
+                    <div class="card-content">
+                        <h3>総注文数</h3>
+                        <p class="card-value" id="totalOrders">125</p>
+                        <p class="card-change positive">+8% 前週比</p>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="card-icon">💸</div>
+                    <div class="card-content">
+                        <h3>平均注文額</h3>
+                        <p class="card-value" id="averageOrder">¥580</p>
+                        <p class="card-change positive">+3% 前週比</p>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="card-icon">👥</div>
+                    <div class="card-content">
+                        <h3>アクティブ顧客</h3>
+                        <p class="card-value" id="activeCustomers">68</p>
+                        <p class="card-change neutral">±0% 前週比</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="charts-section">
+                <div class="chart-container">
+                    <h3>📈 日別売上推移</h3>
+                    <div class="chart-placeholder" id="salesChart">
+                        <div class="chart-mock">
+                            <div class="chart-bar" style="height: 60%;">
+                                <span class="bar-label">10/1<br>¥12,500</span>
+                            </div>
+                            <div class="chart-bar" style="height: 80%;">
+                                <span class="bar-label">10/2<br>¥16,800</span>
+                            </div>
+                            <div class="chart-bar" style="height: 45%;">
+                                <span class="bar-label">10/3<br>¥9,200</span>
+                            </div>
+                            <div class="chart-bar" style="height: 70%;">
+                                <span class="bar-label">10/4<br>¥14,500</span>
+                            </div>
+                            <div class="chart-bar" style="height: 95%;">
+                                <span class="bar-label">10/5<br>¥19,500</span>
+                            </div>
+                        </div>
+                        <p class="chart-note">本格的なチャートライブラリ統合予定</p>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3>🥧 人気メニューランキング</h3>
+                    <div class="ranking-list">
+                        <div class="ranking-item">
+                            <span class="rank">1</span>
+                            <span class="menu-name">鶏の照り焼き弁当</span>
+                            <span class="order-count">32回</span>
+                            <div class="popularity-bar">
+                                <div class="bar-fill" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-item">
+                            <span class="rank">2</span>
+                            <span class="menu-name">ハンバーグ弁当</span>
+                            <span class="order-count">28回</span>
+                            <div class="popularity-bar">
+                                <div class="bar-fill" style="width: 87%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-item">
+                            <span class="rank">3</span>
+                            <span class="menu-name">麻婆豆腐弁当</span>
+                            <span class="order-count">22回</span>
+                            <div class="popularity-bar">
+                                <div class="bar-fill" style="width: 68%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-item">
+                            <span class="rank">4</span>
+                            <span class="menu-name">エビフライ弁当</span>
+                            <span class="order-count">18回</span>
+                            <div class="popularity-bar">
+                                <div class="bar-fill" style="width: 56%;"></div>
+                            </div>
+                        </div>
+                        <div class="ranking-item">
+                            <span class="rank">5</span>
+                            <span class="menu-name">生姜焼き弁当</span>
+                            <span class="order-count">15回</span>
+                            <div class="popularity-bar">
+                                <div class="bar-fill" style="width: 46%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="detailed-reports">
+                <div class="report-table-container">
+                    <h3>📋 詳細データ</h3>
+                    <div class="table-controls">
+                        <select id="reportType" class="report-select">
+                            <option value="daily">日別売上</option>
+                            <option value="menu">メニュー別</option>
+                            <option value="customer">顧客別</option>
+                            <option value="hourly">時間別</option>
+                        </select>
+                        <button class="refresh-btn" onclick="refreshTable()">🔄 更新</button>
+                    </div>
+                    <div class="report-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>日付</th>
+                                    <th>注文数</th>
+                                    <th>売上</th>
+                                    <th>平均単価</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2025/10/05</td>
+                                    <td>23</td>
+                                    <td>¥19,500</td>
+                                    <td>¥847</td>
+                                </tr>
+                                <tr>
+                                    <td>2025/10/04</td>
+                                    <td>19</td>
+                                    <td>¥14,500</td>
+                                    <td>¥763</td>
+                                </tr>
+                                <tr>
+                                    <td>2025/10/03</td>
+                                    <td>15</td>
+                                    <td>¥9,200</td>
+                                    <td>¥613</td>
+                                </tr>
+                                <tr>
+                                    <td>2025/10/02</td>
+                                    <td>28</td>
+                                    <td>¥16,800</td>
+                                    <td>¥600</td>
+                                </tr>
+                                <tr>
+                                    <td>2025/10/01</td>
+                                    <td>21</td>
+                                    <td>¥12,500</td>
+                                    <td>¥595</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 弁当注文システム - 店舗管理</p>
+        </footer>
+    </div>
+
+    <script src="/static/js/common.js"></script>
+    <script src="/static/js/store_reports.js"></script>
+</body>
+</html>

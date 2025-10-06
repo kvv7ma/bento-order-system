@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>店舗ダッシュボード - 弁当注文システム</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/store_dashboard.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🏪 店舗管理システム</h1>
+            <nav class="nav">
+                <a href="/store/dashboard" class="nav-link active">ダッシュボード</a>
+                <a href="/store/orders" class="nav-link">注文管理</a>
+                <a href="/store/menus" class="nav-link">メニュー管理</a>
+                <a href="/store/reports" class="nav-link">レポート</a>
+                <a href="/logout" class="nav-link">ログアウト</a>
+            </nav>
+        </header>
+
+        <main class="main">
+            <section class="page-header">
+                <h2>📊 ダッシュボード</h2>
+                <p>店舗の運営状況を一目で確認</p>
+            </section>
+
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📋</div>
+                    <div class="stat-content">
+                        <h3>今日の注文</h3>
+                        <p class="stat-number" id="todayOrders">23</p>
+                        <p class="stat-change positive">+12% 昨日比</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-content">
+                        <h3>今日の売上</h3>
+                        <p class="stat-number" id="todayRevenue">¥14,500</p>
+                        <p class="stat-change positive">+8% 昨日比</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-content">
+                        <h3>待機中注文</h3>
+                        <p class="stat-number" id="pendingOrders">5</p>
+                        <p class="stat-change">要確認</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">🍱</div>
+                    <div class="stat-content">
+                        <h3>人気メニュー</h3>
+                        <p class="stat-text" id="popularMenu">鶏の照り焼き弁当</p>
+                        <p class="stat-change">8回注文</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="dashboard-content">
+                <div class="dashboard-section">
+                    <h3>🔥 最近の注文</h3>
+                    <div class="recent-orders" id="recentOrders">
+                        <div class="order-summary">
+                            <span class="order-time">12:45</span>
+                            <span class="order-customer">田中太郎</span>
+                            <span class="order-items">鶏の照り焼き弁当 × 2</span>
+                            <span class="order-status status-pending">待機中</span>
+                        </div>
+                        <div class="order-summary">
+                            <span class="order-time">12:30</span>
+                            <span class="order-customer">佐藤花子</span>
+                            <span class="order-items">ハンバーグ弁当 × 1</span>
+                            <span class="order-status status-preparing">準備中</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-section">
+                    <h3>📈 今週の売上グラフ</h3>
+                    <div class="chart-placeholder">
+                        <p>📊 売上チャートエリア</p>
+                        <p class="chart-note">グラフライブラリ統合予定</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="quick-actions">
+                <h3>⚡ クイックアクション</h3>
+                <div class="action-buttons">
+                    <button class="action-btn primary" onclick="location.href='/store/orders'">
+                        📋 注文を確認
+                    </button>
+                    <button class="action-btn secondary" onclick="location.href='/store/menus'">
+                        🍱 メニュー編集
+                    </button>
+                    <button class="action-btn secondary" onclick="refreshDashboard()">
+                        🔄 データ更新
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 弁当注文システム - 店舗管理</p>
+        </footer>
+    </div>
+
+    <script src="/static/js/common.js"></script>
+    <script src="/static/js/store_dashboard.js"></script>
+</body>
+</html>
