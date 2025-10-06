@@ -30,20 +30,30 @@ class AuthForm {
             const hideLoading = UI.showLoading(submitBtn);
 
             try {
+                console.log('ログイン試行中:', credentials.username);
                 const response = await ApiClient.post('/auth/login', credentials);
+                console.log('ログイン成功:', response);
                 
                 // 認証情報を保存
                 Auth.login(response.access_token, response.user);
                 
                 // 成功メッセージ
-                UI.showAlert('ログインしました', 'success');
+                UI.showAlert(`${response.user.full_name}さん、ログインしました`, 'success');
                 
                 // ロールに応じてリダイレクト
                 this.redirectAfterLogin(response.user.role);
                 
             } catch (error) {
                 console.error('Login error:', error);
-                UI.showAlert('ログインに失敗しました: ' + error.message, 'danger');
+                let errorMessage = 'ログインに失敗しました';
+                if (error.message.includes('Incorrect username or password')) {
+                    errorMessage = 'ユーザー名またはパスワードが正しくありません';
+                } else if (error.message.includes('Inactive user')) {
+                    errorMessage = 'アカウントが無効になっています';
+                } else {
+                    errorMessage += ': ' + error.message;
+                }
+                UI.showAlert(errorMessage, 'danger');
             } finally {
                 hideLoading();
             }
@@ -105,20 +115,27 @@ class AuthForm {
                 try {
                     const hideLoading = UI.showLoading(btn);
                     
+                    console.log('デモログイン試行中:', username);
                     const response = await ApiClient.post('/auth/login', {
                         username,
                         password
                     });
+                    console.log('デモログイン成功:', response);
                     
                     Auth.login(response.access_token, response.user);
-                    UI.showAlert(`${username} でログインしました`, 'success');
+                    UI.showAlert(`${response.user.full_name}さん（${username}）でログインしました`, 'success');
                     this.redirectAfterLogin(response.user.role);
                     
                 } catch (error) {
                     console.error('Demo login error:', error);
-                    UI.showAlert('デモログインに失敗しました', 'danger');
-                    btn.innerHTML = 'ログイン';
-                    btn.disabled = false;
+                    let errorMessage = 'デモログインに失敗しました';
+                    if (error.message.includes('Incorrect username or password')) {
+                        errorMessage = 'デモアカウントの認証情報が正しくありません';
+                    } else {
+                        errorMessage += ': ' + error.message;
+                    }
+                    UI.showAlert(errorMessage, 'danger');
+                    hideLoading();
                 }
             });
         });
@@ -229,7 +246,7 @@ class AuthForm {
 
     checkExistingAuth() {
         // 既にログイン済みの場合はリダイレクト
-        if (Auth.isLoggedIn()) {
+        if (Auth.isLoggedIn() && currentUser) {
             this.redirectAfterLogin(currentUser.role);
         }
     }
