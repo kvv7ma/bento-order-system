@@ -238,3 +238,32 @@ class PaginationInfo(BaseModel):
 class PaginatedResponse(BaseModel):
     """ページネーション付きレスポンスの基底クラス"""
     pagination: PaginationInfo
+
+
+# ===== 注文履歴関連 =====
+
+class OrderHistoryItem(BaseModel):
+    """注文履歴の単一アイテム（フロントエンド用に最適化）"""
+    # 注文情報
+    id: int
+    quantity: int
+    total_price: int
+    status: str
+    delivery_time: Optional[time]
+    notes: Optional[str]
+    ordered_at: datetime
+    
+    # メニュー情報（必要な情報のみ）
+    menu_name: str
+    menu_image_url: Optional[str]
+    menu_price: int
+    
+    class Config:
+        from_attributes = True
+
+
+class OrderHistoryResponse(BaseModel):
+    """注文履歴一覧のレスポンス"""
+    orders: List[OrderHistoryItem]
+    total: int
+    pagination: Optional[PaginationInfo] = None
